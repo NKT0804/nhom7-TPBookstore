@@ -55,13 +55,11 @@ span {
   padding: 0;
   margin: 0;
 }
-
 input:focus,
 select:focus,
 textarea:focus {
   outline: 0px;
 }
-
 .row,
 .col-6,
 .col-4 {
@@ -79,7 +77,6 @@ textarea:focus {
   margin-right: 6rem;
   font-size: 15px;
 }
-
 .Announcement .col-12 a {
   color: white;
   margin-right: 2rem;
@@ -147,7 +144,6 @@ textarea:focus {
   /* padding: 5px 5px; */
   font-size: 12px;
 }
-
 .badge3 {
   /* background-color: red;
     position: absolute;
@@ -209,12 +205,10 @@ textarea:focus {
   font-size: 24px;
   margin-bottom: 25px;
 }
-
 .sidebar_item ul {
   margin: 0;
   padding: 0;
 }
-
 .sidebar_item ul li {
   list-style: none;
   display: flex;
@@ -227,7 +221,6 @@ textarea:focus {
   display: block;
   font-family: "Open Sans", sans-serif;
 }
-
 .sidebar_item ul li img {
   width: 25px;
   object-fit: contain;
@@ -283,7 +276,6 @@ textarea:focus {
   width: 100%;
   background-color: val(--white-color);
 }
-
 .shopBack img {
   width: 100%;
   height: 200px;
@@ -553,7 +545,6 @@ textarea:focus {
   text-align: center;
   width: 460px;
 }
-
 .form-section input[type="submit"] {
   background: var(--primary-color);
   border: 0 none;
@@ -581,7 +572,6 @@ textarea:focus {
   justify-content: center;
   align-items: center;
 }
-
 .box-info {
   width: 80%;
   flex-direction: column;
@@ -599,14 +589,12 @@ textarea:focus {
   font-size: 20px;
   color: var(--primary-color);
 }
-
 .box-info h5 {
   font-weight: bold;
   font-size: 19px;
   margin-top: 20px;
   margin-bottom: 4px;
 }
-
 .box-info p {
   font-size: 16px;
 }
@@ -673,7 +661,6 @@ textarea:focus {
   border-radius: 5px;
   margin-top: 40px;
 }
-
 .product-count .flex-box {
   padding: 15px 25px;
   border-bottom: 2px solid #f3f3f3;
@@ -760,7 +747,6 @@ textarea:focus {
 .login-center {
   padding: 30px 0;
 }
-
 .Login,
 .Login2 {
   width: 50%;
@@ -771,7 +757,6 @@ textarea:focus {
   box-shadow: 0 1px 11px rgba(81, 81, 81, 0.27);
   text-align: center;
 }
-
 .Login input {
   width: 100%;
   padding: 10px 20px;
@@ -796,7 +781,6 @@ textarea:focus {
   text-transform: uppercase;
   color: white;
 }
-
 .Login button a,
 .Login2 button a {
   text-transform: uppercase;
@@ -847,7 +831,6 @@ textarea:focus {
   text-align: right;
   align-items: flex-end;
 }
-
 .author-card-position {
   position: absolute;
   text-align: right;
@@ -889,7 +872,6 @@ textarea:focus {
 .custom-file-input::-webkit-file-upload-button {
   visibility: hidden;
 }
-
 .custom-file-input::before {
   content: "Upload avatar";
   color: var(--white-color);
@@ -902,7 +884,6 @@ textarea:focus {
   cursor: pointer;
   font-size: 10pt;
 }
-
 .custom-file-input:active {
   outline: 0;
 }
@@ -919,7 +900,6 @@ textarea:focus {
   flex-wrap: nowrap;
   right: 0;
 }
-
 .btn-submit-change-avt,
 .enableCancel,
 .enable {
@@ -1393,12 +1373,10 @@ textarea:focus {
 .footer {
   background-color: #ececec;
 }
-
 .card-name {
   width: 4%;
   margin: 10px;
 }
-
 .card-name img {
   width: 100%;
   height: 50px;
@@ -1409,7 +1387,6 @@ textarea:focus {
 .payment-container {
   margin-top: 20px;
 }
-
 .radio-container {
   padding: 10px 0;
   text-align: start;
@@ -1621,7 +1598,6 @@ textarea:focus {
   overflow: hidden;
   border-radius: 10px;
 }
-
 a.popu-cate__item {
   margin-bottom: 20px;
 }
@@ -1662,7 +1638,6 @@ a.popu-cate__item {
   text-align: center;
   font-weight: 300;
 }
-
 /* product */
 .product {
   margin-top: 24px;
@@ -1741,7 +1716,6 @@ a.popu-cate__item {
   z-index: 3;
   transition: 1s;
 }
-
 /* .container__product--percent,
 .container__product-name {
     font-size: 15px !important;
@@ -2017,7 +1991,6 @@ a.popu-cate__item {
 .footer__information {
   background-color: #22272b;
 }
-
 .footer__information ul {
   padding-left: 0 !important;
 }
@@ -2135,7 +2108,6 @@ a.popu-cate__item {
   cursor: pointer;
   z-index: 999;
 }
-
 .active-top .fa-arrow-circle-up {
   color: var(--primary-color);
   font-size: 42px;
@@ -2169,7 +2141,6 @@ a.popu-cate__item {
 .col-8.row.product-container {
   width: 85% !important;
 }
-
 .related-product-container {
   width: 100%;
 }

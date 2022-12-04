@@ -14,7 +14,6 @@ const Footer = () => {
   };
 
   // hanlde set show icon footer
-
   window.addEventListener("scroll", toggleVisible);
   return (
     <>

@@ -7,9 +7,21 @@ import Orders from "./../components/profileComponents/Orders";
 import { listMyOrders } from "../Redux/Actions/orderActions";
 import Avatar from "../components/profileComponents/Avatar";
 import UserPassword from "../components/profileComponents/UserPassword";
+import { USER_UPDATE_PROFILE_RESET } from "../Redux/Constants/userConstants";
+import Toast from "../components/base/LoadingError/Toast";
+import { toast } from "react-toastify";
 
 const ProfileScreen = () => {
   window.scrollTo(0, 0);
+  const toastObjects = {
+    position: "top-right",
+    autoClose: 2000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined
+  };
 
   const dispatch = useDispatch();
 
@@ -17,6 +29,8 @@ const ProfileScreen = () => {
   const { userInfo } = userLogin;
   const listMyOrder = useSelector((state) => state.listMyOrders);
   const { loading, error, orders } = listMyOrder;
+  const userUpdateProfile = useSelector((state) => state.userUpdateProfile);
+  const { success: successUpdate } = userUpdateProfile;
 
   useEffect(() => {
     dispatch(listMyOrders());
@@ -26,9 +40,16 @@ const ProfileScreen = () => {
     e.currentTarget.onerror = null; // prevents looping
     e.currentTarget.src = `${window.location.origin}/images/avatar/default.png`;
   };
+  useEffect(() => {
+    if (successUpdate) {
+      toast.success("Cập nhật thông tin thành công", toastObjects);
+      dispatch({ type: USER_UPDATE_PROFILE_RESET });
+    }
+  }, [successUpdate]);
   return (
     <>
       <Header />
+      <Toast />
       <div className="container user__profile mt-lg-5 mt-3">
         <div className="row align-items-start">
           <div className="col-lg-3 col-md-12 p-0 shadow ">

@@ -33,7 +33,7 @@ const Footer = () => {
                   <ul className="footer__infomation--contact-list">
                     {/* <li className="footer__infomation--contact-name">TP Bookstore</li> */}
                     <li className="footer__infomation--contact-address">Địa chỉ: Q12, Ho Chi Minh City</li>
-                    <li className="footer__infomation--contact-email">Email: tp.bookstore@gmail.com</li>
+                    <li className="footer__infomation--contact-email">Email:tpbookstore2022@gmail.com</li>
                     <li className="footer__infomation--contact-phone">SĐT: +0909 0009</li>
                     <div className="gird">
                       <div className="row no-gutters">
@@ -190,52 +190,27 @@ const Footer = () => {
           <div class="icon__footer-social">
             <div class="icon__footer-social--list hidden-mobile">
               <li class="icon__footer-social--item">
-                <a
-                  href="https://www.facebook.com/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="icon__footer-social-link"
-                >
+                <a target="_blank" rel="noopener noreferrer" class="icon__footer-social-link">
                   <i class="icon-footer fab fa-facebook"></i>
                 </a>
               </li>
               <li class="icon__footer-social--item">
-                <a
-                  href="https://www.facebook.com/messages/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="icon__footer-social-link"
-                >
+                <a target="_blank" rel="noopener noreferrer" class="icon__footer-social-link">
                   <i class="icon-footer fab fa-facebook-messenger"></i>
                 </a>
               </li>
               <li class="icon__footer-social--item">
-                <a
-                  href="https://www.instagram.com/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="icon__footer-social-link"
-                >
+                <a target="_blank" rel="noopener noreferrer" class="icon__footer-social-link">
                   <i class="icon-footer fab fa-instagram"></i>
                 </a>
               </li>
               <li class="icon__footer-social--item">
-                <a
-                  href="https://www.linkedin.com/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="icon__footer-social-link"
-                >
+                <a target="_blank" rel="noopener noreferrer" class="icon__footer-social-link">
                   <i class="icon-footer fas fa-phone"></i>
                 </a>
               </li>
               <li class="icon__footer-social--item">
-                <a
-                  href="https://twitter.com/?lang=vi"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="icon__footer-social-link"
-                >
+                <a target="_blank" rel="noopener noreferrer" class="icon__footer-social-link">
                   <i class="icon-footer fab fa-twitter"></i>
                 </a>
               </li>

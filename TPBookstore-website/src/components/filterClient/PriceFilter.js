@@ -43,7 +43,7 @@ const PriceFilter = ({
           <input
             className="distance-price__input"
             type="text"
-            placeholder="₫ TỪ"
+            placeholder=" ₫ TỪ"
             value={currentMinPrice}
             onChange={(e) => validatorPrice(setCurrentMinPrice, e.target.value)}
           ></input>
@@ -51,7 +51,7 @@ const PriceFilter = ({
           <input
             className="distance-price__input"
             type="text"
-            placeholder="₫ ĐẾN"
+            placeholder=" ₫ ĐẾN"
             value={currentMaxPrice}
             onChange={(e) => validatorPrice(setCurrentMaxPrice, e.target.value)}
           ></input>

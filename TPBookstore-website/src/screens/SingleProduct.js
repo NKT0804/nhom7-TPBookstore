@@ -37,7 +37,6 @@ const ToastObjects = {
   autoClose: 2000
 };
 const SingleProduct = ({ history, match }) => {
-  window.scrollTo(0, 0);
   const [qty, setQty] = useState(1);
   const [rating, setRating] = useState(5);
   const [reviewContent, setReviewContent] = useState("");
@@ -51,7 +50,7 @@ const SingleProduct = ({ history, match }) => {
   const productDetails = useSelector((state) => state.productDetails);
   const { loading, error, product } = productDetails;
 
-  const relatedProducts = products?.filter((item) => item.category._id === product.category);
+  const relatedProducts = products?.filter((item) => item.category._id === product?.category);
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
@@ -290,13 +289,13 @@ const SingleProduct = ({ history, match }) => {
                     </div>
                     <div className="flex-box d-flex justify-content-between align-items-center">
                       <h6>Đánh giá</h6>
-                      <a href="#review">
+                      <Link href="#review">
                         <Rating
                           value={product.rating}
                           numRating={product.rating}
                           text={`  ${product.numReviews} Đánh giá`}
                         />
-                      </a>
+                      </Link>
                     </div>
                     <div className="flex-box d-flex justify-content-between align-items-center">
                       <h6>Số lượng</h6>
@@ -452,7 +451,7 @@ const SingleProduct = ({ history, match }) => {
                     </div>
                     <div className="my-4">
                       <textarea
-                        row="5"
+                        row="1"
                         value={reviewContent}
                         onChange={(e) => setReviewContent(e.target.value)}
                         className="col-12 bg-light p-3 mt-2 border-1 rounded"

@@ -83,12 +83,12 @@ const Header = () => {
         </button>
         <ul className="nav">
           <li className="nav-item">
-            <Link className={`nav-link btn-icon `} title="Dark mode" to="#">
+            <Link className={`nav-link btn-icon `} title="Dark mode">
               <i className="fas fa-moon"></i>
             </Link>
           </li>
           <li className="nav-item">
-            <Link className="nav-link btn-icon" to="#">
+            <Link className="nav-link btn-icon">
               <i className="fas fa-bell"></i>
             </Link>
           </li>
@@ -106,9 +106,7 @@ const Header = () => {
               <Link className="dropdown-item" to="/profile">
                 Tài khoản
               </Link>
-              <Link className="dropdown-item" to="#">
-                Cài đặt
-              </Link>
+              {/* <Link className="dropdown-item">Cài đặt</Link> */}
               <Link onClick={logoutHandler} className="dropdown-item text-danger" to="#">
                 Đăng xuất
               </Link>

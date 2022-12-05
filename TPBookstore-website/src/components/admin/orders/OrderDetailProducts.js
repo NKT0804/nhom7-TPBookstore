@@ -22,7 +22,7 @@ const OrderDetailProducts = (props) => {
         {order?.orderItems.map((item, index) => (
           <tr key={index}>
             <td>
-              <Link className="itemside" to="#">
+              <Link className="itemside" to={`/product/${item.product.slug}`}>
                 <div className="left">
                   <img src={item.image} alt={item.name} style={{ width: "100px", height: "auto" }} className="img-xs" />
                 </div>

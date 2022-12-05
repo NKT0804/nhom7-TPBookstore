@@ -16,6 +16,7 @@ import {
   PRODUCT_CREATE_COMMENT_REPLY_RESET,
   PRODUCT_CREATE_COMMENT_RESET
 } from "../../Redux/Constants/productConstants";
+import Modal from "../base/modal/Modal";
 
 const ProductComment = (props) => {
   const { userInfo, productId } = props;
@@ -26,6 +27,7 @@ const ProductComment = (props) => {
   const [contentFirstReply, setContentFirstReply] = useState("");
   const [checkIdReplyComment, setCheckIdReplyComment] = useState(null);
   const [isEditComment, setIsEditComment] = useState(false);
+  const [commentIdDelete, setCommentIdDelete] = useState("");
 
   const getCommentProduct = useSelector((state) => state.productComment);
   const { comments } = getCommentProduct;
@@ -128,19 +130,21 @@ const ProductComment = (props) => {
     setContentFirstReply(`@${usernameComment} `);
   };
 
-  const onDeleteCommentHandler = useCallback(
-    (id) => {
-      if (window.confirm("Xóa bình luận?")) {
-        dispatch(deleteProductComment(id));
-      }
-    },
-    [dispatch]
-  );
+  const onDeleteCommentHandler = () => {
+    dispatch(deleteProductComment(commentIdDelete));
+  };
 
   useEffect(() => loadListCommentProduct(), [loadListCommentProduct]);
   useEffect(() => loadNotifiCreateProductComment(), [loadNotifiCreateProductComment]);
   return (
     <div className="wrap-comment">
+      <Modal
+        modalTitle={"Xóa Bình luận"}
+        modalBody={"Bạn có chắc muốn xóa bình luận này?"}
+        btnTitle={"Xóa"}
+        btnType={"delete"}
+        handler={onDeleteCommentHandler}
+      />
       <h3>Bình luận sản phẩm</h3>
       {userInfo ? (
         <form className="mt-3 mb-3 nav justify-content-end" onSubmit={submitHandler}>
@@ -255,9 +259,10 @@ const ProductComment = (props) => {
                                   Sửa bình luận
                                 </Link>
                                 <Link
-                                  to="#"
+                                  data-toggle="modal"
+                                  data-target="#exampleModalCenter"
                                   className="dropdown-item btn-size"
-                                  onClick={() => onDeleteCommentHandler(item._id)}
+                                  onClick={() => setCommentIdDelete(item._id)}
                                 >
                                   Xóa bình luận
                                 </Link>
@@ -354,9 +359,10 @@ const ProductComment = (props) => {
                                         Sửa bình luận
                                       </Link>
                                       <Link
-                                        to="#"
+                                        data-toggle="modal"
+                                        data-target="#exampleModalCenter"
                                         className="dropdown-item btn-size"
-                                        onClick={() => onDeleteCommentHandler(reply._id)}
+                                        onClick={() => setCommentIdDelete(reply._id)}
                                       >
                                         Xóa bình luận
                                       </Link>

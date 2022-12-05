@@ -8,7 +8,7 @@ const CategoryList = () => {
   const categoryList = useSelector((state) => state.categoryList);
   const { category } = categoryList;
   let categoryParent = [];
-  if (category.length > 0) {
+  if (category?.length > 0) {
     category?.map((item) => categoryParent.push(item.parent_category));
     categoryParent = Array.from(new Set(categoryParent));
   }

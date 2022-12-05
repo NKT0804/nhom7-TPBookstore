@@ -155,7 +155,7 @@ const Orders = (props) => {
                           </Link>
                         )}
 
-                        <Link data-toggle="modal" className="dropdown-item" data-target="#exampleModalCenter">
+                        <Link className="dropdown-item">
                           <i
                             class="text-danger fas fa-trash-alt"
                             data-toggle="modal"

@@ -119,7 +119,7 @@ const MainProducts = React.memo((props) => {
               setCategoryFilterAdmin={setCategoryFilterAdmin}
             />
             <SortBy sortBy={sortBy} setSortBy={setSortBy} />
-            <div className="col-lg-2 col-6 col-md-3 ml-4">
+            <div className="col-lg-2 col-6 col-md-3 mx-2">
               <select className="form-select" value={status} onChange={(e) => setStatus(e.target.value)}>
                 <option value={"all"}>Tất cả trạng thái</option>
                 <option value={"disabled"}>Đang bị ẩn</option>

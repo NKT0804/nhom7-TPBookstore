@@ -16,11 +16,12 @@ const OrderScreen = ({ match }) => {
 
   const orderDetails = useSelector((state) => state.orderDetails);
   const { order, loading, error } = orderDetails;
+  console.log(order);
   const orderCancel = useSelector((state) => state.orderCancelUser);
   const { loading: loadingCancel, success: successCancel } = orderCancel;
 
   if (!loading) {
-    order.itemsPrice = order.orderItems.reduce((accumulate, item) => accumulate + item.price * item.qty, 0);
+    order.itemsPrice = order?.orderItems?.reduce((accumulate, item) => accumulate + item.price * item.qty, 0);
   }
 
   useEffect(() => {
@@ -176,19 +177,19 @@ const OrderScreen = ({ match }) => {
 
             <div className="row order-products justify-content-between">
               <div className="col-lg-8">
-                {order?.orderItems.length === 0 ? (
+                {order?.orderItems?.length === 0 ? (
                   <Message variant="alert-info mt-5">Bạn chưa có sản phẩm nào trong đơn hàng</Message>
                 ) : (
                   <>
-                    {order?.orderItems.map((item, index) => (
+                    {order?.orderItems?.map((item, index) => (
                       <div className="order-products-item row" key={index}>
                         <div className="col-lg-2 col-md-2 col-3">
-                          <Link to={`/product/${item.product}`}>
+                          <Link to={`/product/${item.product.slug}`}>
                             <img src={item.image} alt={item.name} />
                           </Link>
                         </div>
                         <div className="col-lg-4 px-2 col-md-4 col-6 d-flex align-items-center">
-                          <Link to={`/product/${item.product}`}>
+                          <Link to={`/product/${item.product.slug}`}>
                             <h6>{item.name.length >= 50 ? `${item.name.slice(0, 50)}...` : ` ${item.name}`}</h6>
                           </Link>
                         </div>
@@ -259,7 +260,7 @@ const OrderScreen = ({ match }) => {
                     </button>
                   </>
                 ) : (
-                  <button className="col-12 fs-primary fw-bold text-danger mt-2">Đơn hàng đã bị hủy</button>
+                  <button className="col-12 btn-danger fs-primary fw-bold mt-2">Đơn hàng đã bị hủy</button>
                 )}
               </div>
             </div>

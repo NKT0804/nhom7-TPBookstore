@@ -211,10 +211,10 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
 
     const { data } = await axios.put(`/api/v1/user/profile`, user, config);
     dispatch({ type: USER_UPDATE_PROFILE_SUCCESS, payload: data });
-    dispatch({
-      type: USER_LOGIN_SUCCESS,
-      payload: data
-    });
+    // dispatch({
+    //   type: USER_LOGIN_SUCCESS,
+    //   payload: data
+    // });
   } catch (error) {
     const message = error.response && error.response.data.message ? error.response.data.message : error.message;
     if (message === "Not authorized, token failed") {

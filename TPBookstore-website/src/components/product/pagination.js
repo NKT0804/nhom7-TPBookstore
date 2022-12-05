@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 
 const Pagination = (props) => {
@@ -15,6 +15,26 @@ const Pagination = (props) => {
     : `?`;
   const limitQuery = limit ? `&limit=${limit}` : "";
 
+  let listPages = [];
+  if (pages <= 5) {
+    for (let i = 1; i <= pages; i++) {
+      listPages.push(i);
+    }
+  } else {
+    listPages = [];
+    if (page < 3) {
+      listPages.push(1, 2, 3, "...", pages);
+    } else if (page === 3) {
+      listPages.push(1, 2, 3, 4, "...", pages);
+    } else if (page === pages - 2) {
+      listPages.push(1, "...", pages - 3, pages - 2, pages - 1, pages);
+    } else if (page > pages - 2) {
+      listPages.push(1, "...", pages - 2, pages - 1, pages);
+    } else {
+      listPages.push(1, "...", page - 1, page, page + 1, "...", pages);
+    }
+  }
+
   return (
     pages > 1 && (
       <nav className="pagination-group">
@@ -24,13 +44,19 @@ const Pagination = (props) => {
           </Link>
         </div>
         <ul className="pagination justify-content-center">
-          {[...Array(pages).keys()].map((x) => (
-            <li className={`page-item ${x + 1 === page ? "active" : ""}`} key={x + 1}>
-              <Link className="page-link" to={`${baseQuery}${limitQuery}&p=${x + 1}`}>
-                {x + 1}
-              </Link>
-            </li>
-          ))}
+          {listPages.map((x) =>
+            typeof x === "number" ? (
+              <li className={`page-item ${x === page ? "active" : ""}`} key={x}>
+                <Link className="page-link" to={`${baseQuery}${limitQuery}&p=${x}`}>
+                  {x}
+                </Link>
+              </li>
+            ) : (
+              <li className={`page-item`}>
+                <Link className="page-link page-link__dots">{x}</Link>
+              </li>
+            )
+          )}
         </ul>
         <div className="icon-right">
           <Link to={`${baseQuery}${limitQuery}${nextPageQuery}`}>

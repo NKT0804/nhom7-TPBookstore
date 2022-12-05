@@ -142,7 +142,7 @@ const Product = (props) => {
                   <i class="fas fa-ellipsis-h"></i>
                 </div>
 
-                <div className="action__ dropdown-menu">
+                <div className="action__product dropdown-menu">
                   <Link className="dropdown-item" to={`/admin/product/${product._id}/edit`}>
                     <i className="fas fa-edit text-warning "></i> &nbsp; Sửa
                   </Link>
@@ -174,17 +174,17 @@ const Product = (props) => {
                     </Link>
                   )}
 
-                  <Link
-                    className="dropdown-item"
-                    data-toggle="modal"
-                    data-target="#exampleModalCenter"
-                    onClick={() => {
-                      typeModal("deleteProduct");
-                      setProductIdSelected(product._id);
-                    }}
-                    style={{ opacity: "1" }}
-                  >
-                    <i class="fas fa-trash-alt edit__products text-danger"></i>
+                  <Link className="dropdown-item">
+                    <i
+                      class="fas fa-trash-alt edit__products text-danger"
+                      data-toggle="modal"
+                      data-target="#exampleModalCenter"
+                      onClick={() => {
+                        typeModal("deleteProduct");
+                        setProductIdSelected(product._id);
+                      }}
+                      style={{ opacity: "1" }}
+                    ></i>
                     &nbsp; Xoá
                   </Link>
                 </div>

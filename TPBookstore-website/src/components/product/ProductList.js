@@ -80,16 +80,15 @@ const ProductList = (props) => {
                     />
                   </div>
                   <ProductComponent loading={loading} error={error} products={products} />
+                  {/* Pagination */}
+                  <Pagination
+                    page={page}
+                    pages={pages}
+                    keyword={keyword ? keyword : ""}
+                    limit={limit}
+                    categorySlug={categorySlug}
+                  />
                 </div>
-
-                {/* Pagination */}
-                <Pagination
-                  page={page}
-                  pages={pages}
-                  keyword={keyword ? keyword : ""}
-                  limit={limit}
-                  categorySlug={categorySlug}
-                />
               </div>
             </div>
           </div>

@@ -322,6 +322,19 @@ textarea:focus {
 .all-products .section {
   padding-bottom: 0;
 }
+
+.not__found {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.not__found img {
+  width: 17%;
+  height: 20%;
+}
+
 /* list category */
 .list__category {
   display: flex;
@@ -501,7 +514,7 @@ textarea:focus {
 }
 
 .rating-color i {
-  color: #ffff22;
+  color: var(--primary-color);
 }
 
 .shadow:hover {

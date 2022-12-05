@@ -1,26 +1,13 @@
 /* eslint-disable jsx-a11y/alt-text */
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Toast from "./../base/LoadingError/Toast";
 import Loading from "./../base/LoadingError/Loading";
 import Message from "./../base/LoadingError/Error";
-import { toast } from "react-toastify";
 import { updateUserProfile } from "../../Redux/Actions/userActions";
 import { getAddressData } from "../../Redux/Actions/userActions";
 import isEmpty from "validator/lib/isEmpty";
 
 const ProfileTabs = () => {
-  const toastObjects = {
-    position: "top-right",
-    autoClose: 2000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined
-  };
-  const toastId = React.useRef(null);
-
   const dispatch = useDispatch();
 
   const userDetails = useSelector((state) => state.userDetails);
@@ -159,9 +146,6 @@ const ProfileTabs = () => {
         address
       })
     );
-    if (!toast.isActive(toastId.current)) {
-      toastId.current = toast.success("Cập nhật thông tin thành công", toastObjects);
-    }
   };
 
   useEffect(() => {
@@ -169,7 +153,6 @@ const ProfileTabs = () => {
   }, [dispatch]);
   return (
     <>
-      <Toast />
       {error && <Message variant="alert-danger">{error}</Message>}
       {loading && <Loading />}
       {updateLoading && <Loading />}

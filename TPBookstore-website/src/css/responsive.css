@@ -341,6 +341,12 @@
     margin-top: 8px;
   }
 
+  /* all product */
+  .not__found img {
+    width: 42%;
+    height: 50%;
+  }
+
   /* box__contact */
   .box__contact {
     position: relative;

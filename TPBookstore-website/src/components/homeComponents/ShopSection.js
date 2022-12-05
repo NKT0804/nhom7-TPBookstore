@@ -19,7 +19,7 @@ const ShopSection = (props) => {
     }
   }
   let productList = [];
-  if (products.length > 0) {
+  if (products?.length > 0) {
     products.map((item) => {
       if (item.category.parent_category === categorySelected) productList.push(item);
       return productList;
@@ -57,16 +57,14 @@ const ShopSection = (props) => {
                   <div className="col-lg-12 col-md-12 col-9 row product-container ">
                     {loading && <Loading />}
                     {loading ? (
-                      productList?.map((product) => {
-                        if (product.category.parent_category === categorySelected) {
-                          return (
-                            <div className="l-2-4" aria-hidden="true" key={product._id}>
-                              <div className="shadow p-3 mb-4 bg-body rounded">
-                                <CardProductLoading />
-                              </div>
+                      [...Array(10).keys()]?.map((index) => {
+                        return (
+                          <div className="l-2-4" aria-hidden="true" key={index}>
+                            <div className="shadow p-3 mb-4 bg-body rounded">
+                              <CardProductLoading />
                             </div>
-                          );
-                        }
+                          </div>
+                        );
                       })
                     ) : error ? (
                       <Message variant="alert-danger">{error}</Message>

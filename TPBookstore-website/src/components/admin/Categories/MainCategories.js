@@ -4,7 +4,14 @@ import CategoriesTable from "./CategoriesTable";
 import UpdateCategory from "./UpdateCategory";
 
 const MainCategories = () => {
+  const [isEditCategory, setIsEditCategory] = useState(false);
+  const [currentCategory, setCurrentCategory] = useState("");
 
+  const handleEditCategory = () => setIsEditCategory(true);
+
+  const handleCurrentCategory = (cate) => {
+    setCurrentCategory(cate);
+  };
   return (
     <>
       <section className="content-main mt-4">
@@ -15,8 +22,8 @@ const MainCategories = () => {
         <div className="row shadow-sm">
           <div className="card shadow-sm p-2 pb-3 col-lg-3 col-md-12">
             {/* Create category or Update category*/}
-            {true ? (
-              <UpdateCategory  />
+            {isEditCategory ? (
+              <UpdateCategory currentCategory={currentCategory} setIsEditCategory={setIsEditCategory} />
             ) : (
               <CreateCategory />
             )}
@@ -24,6 +31,9 @@ const MainCategories = () => {
           {/* Categories table */}
           <div className="card p-3 col-lg-9 col-md-12">
             <CategoriesTable
+              setIsEditCategory={setIsEditCategory}
+              handleEditCategory={handleEditCategory}
+              handleCurrentCategory={handleCurrentCategory}
             />
           </div>
         </div>

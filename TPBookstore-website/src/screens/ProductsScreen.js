@@ -13,7 +13,7 @@ const ProductsScreen = ({ location, match }) => {
 
   return (
     <div>
-      <Header />
+      <Header categorySlug={categorySlug} />
       <ProductList categorySlug={categorySlug} keyword={keyword} pageNumber={page} limit={limit} />
       <Footer />
     </div>

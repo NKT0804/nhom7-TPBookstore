@@ -1,22 +1,53 @@
 import React, { useCallback, useEffect, useState } from "react";
-import Loading from "../../../../../../../OOP/TPBookStore-main/TPBookstore-website/src/components/base/LoadingError/Loading";
-import Modal from "../../../../../../../OOP/TPBookStore-main/TPBookstore-website/src/components/base/modal/Modal";
+import { useDispatch, useSelector } from "react-redux";
+import { updateCategoryAdmin } from "../../../Redux/Actions/categoryActions";
+import Loading from "../../base/LoadingError/Loading";
+import Modal from "../../base/modal/Modal";
 
 const UpdateCategory = ({ currentCategory, setIsEditCategory }) => {
+  const [name, setName] = useState("");
+  const [parent_category, setParent_category] = useState("");
+
+  const dispatch = useDispatch();
+
+  const categoryListAdmin = useSelector((state) => state.categoryListAdmin);
+  const { category } = categoryListAdmin;
+
+  const categoryUpdateAdmin = useSelector((state) => state.categoryUpdateAdmin);
+  const { loading } = categoryUpdateAdmin;
+
+  const updateCategoryHandler = useCallback(() => {
+    setName(category[currentCategory]?.name ?? "");
+    setParent_category(category[currentCategory]?.parent_category ?? "");
+  }, [category, currentCategory]);
+
+  useEffect(() => {
+    updateCategoryHandler();
+  }, [updateCategoryHandler]);
+
   const submitHandler = () => {
+    dispatch(
+      updateCategoryAdmin({
+        _id: category[currentCategory]?._id,
+        name,
+        parent_category,
+        status: true
+      })
+    );
   };
+
   return (
     <>
-      <Modal
+      {/* <Modal
         modalTitle={"Cập nhật danh mục sản phẩm"}
         modalBody={"Bạn có chắc muốn cập nhật danh mục này?"}
         btnTitle={"Lưu thay đổi"}
         btnType={"confirm"}
         handler={submitHandler}
-      />
+      /> */}
       <div className="">
         <div>
-          {true && <Loading />}
+          {loading && <Loading />}
           <div className="d-flex justify-content-between">
             <div className="mb-3 w-100">
               <label htmlFor="category_name" className="form-label">
@@ -27,6 +58,8 @@ const UpdateCategory = ({ currentCategory, setIsEditCategory }) => {
                 placeholder="Type here"
                 className="form-control"
                 id="category_name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
               />
             </div>
           </div>
@@ -40,6 +73,8 @@ const UpdateCategory = ({ currentCategory, setIsEditCategory }) => {
                 placeholder="Type here"
                 className="form-control"
                 id="parent-category"
+                value={parent_category}
+                onChange={(e) => setParent_category(e.target.value)}
               />
             </div>
           </div>

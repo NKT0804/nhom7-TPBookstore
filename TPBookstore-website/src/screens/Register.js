@@ -56,7 +56,6 @@ const Register = ({ location, history }) => {
       dispatch(userRegisterAction(history, value.name, value.email, value.phone, value.password));
     }
   });
-
   return (
     <>
       <Header />

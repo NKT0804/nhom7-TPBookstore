@@ -22,7 +22,6 @@ const ProfileScreen = () => {
     dispatch(listMyOrders());
     dispatch(getUserDetails());
   }, [dispatch]);
-
   const onAvatarLoadError = (e) => {
     e.currentTarget.onerror = null; // prevents looping
     e.currentTarget.src = `${window.location.origin}/images/avatar/default.png`;

@@ -9,9 +9,9 @@ import CalltoActionSection from "../components/homeComponents/CalltoActionSectio
 import Slideshow from "../components/Slideshow";
 import Footer from "../components/Footer";
 import Policy from "./Policy";
-import CustomerReview from "./CustomerReview";
+import CustomerReview from "../components/homeComponents/CustomerReview";
 import BestSellerProduct from "../components/carouselProduct/BestSellerProduct";
-import BestNumViewsProduct from "../components/carouselProduct/BestNumViewsProduct";
+import NewProduct from "../components/carouselProduct/NewProduct";
 
 const HomeScreen = ({ location }) => {
   window.scrollTo(0, 0);
@@ -44,7 +44,7 @@ const HomeScreen = ({ location }) => {
         <BestSellerProduct />
       </div>
       <div className="container">
-        <BestNumViewsProduct />
+        <NewProduct />
       </div>
       <ShopSection loading={loading} error={error} categoryList={categoryParent.slice(0, 4)} products={products} />
       <ShopSection loading={loading} error={error} categoryList={categoryParent.slice(4, 8)} products={products} />

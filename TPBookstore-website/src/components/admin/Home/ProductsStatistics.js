@@ -15,7 +15,7 @@ const ProductsStatistics = () => {
               width: "100%",
               height: "350px"
             }}
-            src=""
+            src="https://charts.mongodb.com/charts-tpbookstore-dyxdp/embed/charts?id=6369f685-f805-4ded-8bc5-b7b76c21177f&maxDataAge=1800&theme=light&autoRefresh=true"
           ></iframe>
         </article>
       </div>

@@ -21,8 +21,11 @@ export const getCroppedImg = async (imageSrc, crop) => {
   ctx.drawImage(image, crop.x, crop.y, crop.width, crop.height, 0, 0, canvas.width, canvas.height);
 
   return new Promise((resolve) => {
-    canvas.toBlob((blob) => {
-      resolve(blob);
-    }, "image/png");
+    resolve(canvas.toDataURL());
   });
+  // return new Promise((resolve) => {
+  //   canvas.toBlob((blob) => {
+  //     resolve(blob);
+  //   }, "image/png");
+  // });
 };

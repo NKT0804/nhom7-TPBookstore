@@ -32,7 +32,7 @@ const CartScreen = ({ history }) => {
   const { success: removeCartSuccess, error: removeCartError } = removeCart;
 
   const updateCartStore = useSelector((state) => state.cartUpdate);
-  const { success: updateCartSuccess, error: updateCartError } = updateCartStore;
+  const { loading, success: updateCartSuccess, error: updateCartError } = updateCartStore;
 
   useEffect(() => {
     dispatch(getCartListItem());
@@ -123,30 +123,50 @@ const CartScreen = ({ history }) => {
                       name="checkboxBuy"
                       id={item.product._id}
                       checked={item.isBuy}
-                      hidden={item.product?.countInStock <= 0}
-                      disabled={item.product?.countInStock <= 0}
-                      onChange={(e) => updateFromCartHandler(item.product._id, item.qty, e.target.checked)}
+                      hidden={item.product?.countInStock <= 0 || item.product.isDisabled}
+                      disabled={item.product?.countInStock <= 0 || item.product.isDisabled}
+                      onChange={(e) => {
+                        updateFromCartHandler(item.product._id, item.qty, e.target.checked);
+                      }}
                     />
                   </div>
                   {/* Image */}
-                  <div className="cart-itemPC-image col-lg-2">
-                    <Link to={`/product/${item.product._id}`}>
+                  <div
+                    className={
+                      item.product.isDisabled
+                        ? `cart-itemPC-image col-lg-2 status-disabled`
+                        : `cart-itemPC-image col-lg-2`
+                    }
+                  >
+                    <Link to={`/product/${item.product.slug}`}>
                       <img src={item.product.image} alt={item.product.name} />
                     </Link>
                   </div>
                   {/* Name */}
-                  <div className="cart-itemPC-text col-lg-3 col-md-5">
-                    <Link to={`/product/${item.product._id}`}>
+                  <div
+                    className={
+                      item.product.isDisabled
+                        ? `cart-itemPC-text col-lg-3 col-md-5 status-disabled`
+                        : `cart-itemPC-text col-lg-3`
+                    }
+                  >
+                    <Link to={`/product/${item.product.slug}`}>
                       <p>{item.product.name}</p>
                     </Link>
                   </div>
                   {/* Price */}
-                  <div className="cart-itemPC-price col-lg-2">
+                  <div
+                    className={
+                      item.product.isDisabled
+                        ? `cart-itemPC-price col-lg-2 status-disabled`
+                        : `cart-itemPC-price col-lg-2`
+                    }
+                  >
                     <b>{formatCash(item.product.priceSale)}</b>
                   </div>
                   {/* Quantity */}
                   <div className="cart-itemPC-qty col-lg-1">
-                    {item.product.countInStock > 0 ? (
+                    {item.product.countInStock > 0 && !item.product.isDisabled ? (
                       <select
                         value={item.qty}
                         onChange={(e) => updateFromCartHandler(item.product._id, Number(e.target.value), item.isBuy)}
@@ -157,17 +177,25 @@ const CartScreen = ({ history }) => {
                           </option>
                         ))}
                       </select>
+                    ) : item.product.isDisabled ? (
+                      <div className="cart-item-qty-alert text-center text-danger fw-bold">Sản phẩm đã ngừng bán</div>
                     ) : (
                       <div className="cart-item-qty-alert text-danger fw-bold">Hết hàng</div>
                     )}
                   </div>
                   {/* Total a product */}
-                  <div className="cart-itemPC-total col-lg-2">
+                  <div
+                    className={
+                      item.product.isDisabled
+                        ? `cart-itemPC-total col-lg-2 status-disabled`
+                        : `cart-itemPC-total col-lg-2`
+                    }
+                  >
                     <b>{formatCash(item.product.priceSale * item.qty)}</b>
                   </div>
                   {/* Remove product */}
                   <div className="col-lg-1 cart-itemPC-remove ">
-                    <Link data-toggle="modal" data-target="#exampleModalCenter">
+                    <Link data-toggle="modal" data-target="#exampleModalCenter" title="Xoá" target="_blank">
                       <i class="fas fa-trash-alt text-danger" onClick={() => setProductIdDelete(item.product._id)}></i>
                     </Link>
                   </div>
@@ -184,14 +212,14 @@ const CartScreen = ({ history }) => {
                         name="checkboxBuy"
                         id={item.product._id}
                         checked={item.isBuy}
-                        hidden={item.product?.countInStock <= 0}
-                        disabled={item.product?.countInStock <= 0}
+                        hidden={item.product?.countInStock <= 0 || item.product.isDisabled}
+                        disabled={item.product?.countInStock <= 0 || item.product.isDisabled}
                         onChange={(e) => updateFromCartHandler(item.product._id, item.qty, e.target.checked)}
                       />
                     </div>
                     {/* Image */}
                     <div className="cart-itemMobile-image col-md-8 col-9">
-                      <Link to={`/product/${item.product._id}`}>
+                      <Link to={`/product/${item.product.slug}`}>
                         <img src={item.product.image} alt={item.product.name} />
                       </Link>
                     </div>
@@ -200,7 +228,7 @@ const CartScreen = ({ history }) => {
                   {/* Name */}
                   <div className="row col-md-7 col-7">
                     <div className="cart-itemMobile-text col-md-12 col-12">
-                      <Link to={`/product/${item.product._id}`}>
+                      <Link to={`/product/${item.product.slug}`}>
                         <p>{item.product.name}</p>
                       </Link>
                     </div>
@@ -210,7 +238,7 @@ const CartScreen = ({ history }) => {
                     </div>
                     {/* Quantity */}
                     <div className="cart-itemMobile-qty col-md-4 col-5">
-                      {item.product.countInStock > 0 ? (
+                      {item.product.countInStock > 0 && !item.product.isDisabled ? (
                         <select
                           value={item.qty}
                           onChange={(e) => updateFromCartHandler(item.product._id, Number(e.target.value), item.isBuy)}
@@ -221,6 +249,8 @@ const CartScreen = ({ history }) => {
                             </option>
                           ))}
                         </select>
+                      ) : item.product.isDisabled ? (
+                        <div className="cart-item-qty-alert text-danger fw-bold">Sản phẩm không còn tồn tại</div>
                       ) : (
                         <div className="cart-item-qty-alert text-danger fw-bold">Hết hàng</div>
                       )}
@@ -231,7 +261,7 @@ const CartScreen = ({ history }) => {
                     </div> */}
                     {/* Remove product */}
                     <div className="col-md-12 col-12 mt-3 cart-itemMobile-remove">
-                      <Link data-toggle="modal" data-target="#exampleModalCenter">
+                      <Link data-toggle="modal" data-target="#exampleModalCenter" title="Xoá" target="_blank">
                         <i
                           class="fas fa-trash-alt text-danger"
                           onClick={() => setProductIdDelete(item.product._id)}

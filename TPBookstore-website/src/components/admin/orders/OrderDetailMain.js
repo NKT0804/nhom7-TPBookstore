@@ -2,22 +2,120 @@ import React, { useEffect, useState } from "react";
 import OrderDetailProducts from "./OrderDetailProducts";
 import OrderDetailInfo from "./OrderDetailInfo";
 import { Link } from "react-router-dom";
+import formatCash from "../../../utils/formatCash";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  deliverOrder,
+  getOrderDetails,
+  isPaidOrder,
+  confirmOrder,
+  cancelOrderAdmin
+} from "./../../../Redux/Actions/orderActions";
 import Loading from "./../../base/LoadingError/Loading";
 import Message from "./../../base/LoadingError/Error";
+import moment from "moment";
 import Modal from "../../base/modal/Modal";
 
 const OrderDetailMain = (props) => {
+  const { orderId } = props;
+  const dispatch = useDispatch();
+
+  const orderDetails = useSelector((state) => state.orderDetails);
+  const { loading, error, order } = orderDetails;
+
+  if (!loading) {
+    order.itemsPrice = order.orderItems.reduce((accumulate, item) => accumulate + item.price * item.qty, 0);
+  }
+
+  const orderDeliver = useSelector((state) => state.orderDeliver);
+  const { loading: loadingDelivered, success: successDelivered } = orderDeliver;
+
+  const orderConfirm = useSelector((state) => state.orderConfirm);
+  const { loading: loadingConfirm, success: successConfirm } = orderConfirm;
+
+  const orderIsPaid = useSelector((state) => state.orderIsPaidAdmin);
+  const { loading: loadingIsPaid, success: successIsPaid } = orderIsPaid;
+
+  const orderCancelAdmin = useSelector((state) => state.orderCancelAdmin);
+  const { loading: loadingCancel, success: successCancel } = orderCancelAdmin;
+
+  useEffect(() => {
+    dispatch(getOrderDetails(orderId));
+  }, [dispatch, orderId, successDelivered, successIsPaid, successConfirm, successCancel]);
+
+  const [modalTitle, setModalTitle] = useState("");
+  const [modalBody, setModalBody] = useState("");
+  const [btnTitle, setBtnTitle] = useState("");
+  const [btnType, setBtnType] = useState("");
+  const [typeAction, setTypeAction] = useState(() => {});
+
+  const typeModal = (type) => {
+    if (type === "confirm") {
+      setModalTitle("Xác nhận đơn hàng");
+      setModalBody("Bạn có chắc muốn nhận đơn hàng này?");
+      setBtnTitle("Xác nhận");
+      setBtnType("confirm");
+      setTypeAction(type);
+    }
+    if (type === "deliver") {
+      setModalTitle("Xác nhận đã giao hàng");
+      setModalBody("Bạn có chắc đơn hàng đã giao thành công?");
+      setBtnTitle("Xác nhận");
+      setBtnType("confirm");
+      setTypeAction(type);
+    }
+    if (type === "paid") {
+      setModalTitle("Xác nhận đã thanh toán");
+      setModalBody("Bạn có chắc đơn hàng đã thanh toán thành công?");
+      setBtnTitle("Xác nhận");
+      setBtnType("confirm");
+      setTypeAction(type);
+    }
+    if (type === "cancel") {
+      setModalTitle("Xác nhận hủy đơn hàng");
+      setModalBody("Bạn có chắc muốn hủy đơn hàng này?");
+      setBtnTitle("Hủy");
+      setBtnType("delete");
+      setTypeAction(type);
+    }
+  };
+
+  const confirmHandler = () => {
+    dispatch(confirmOrder(order._id));
+  };
+  const deliverHandler = () => {
+    dispatch(deliverOrder(order._id));
+  };
+  const isPaidHandler = () => {
+    dispatch(isPaidOrder(order._id));
+  };
+  const cancelHandler = () => {
+    dispatch(cancelOrderAdmin(order._id));
+  };
   return (
     <>
       <Modal
+        modalTitle={modalTitle}
+        modalBody={modalBody}
+        btnTitle={btnTitle}
+        btnType={btnType}
+        handler={
+          typeAction === "confirm"
+            ? confirmHandler
+            : typeAction === "deliver"
+            ? deliverHandler
+            : typeAction === "paid"
+            ? isPaidHandler
+            : cancelHandler
+        }
       />
       <section className="content-main">
-        {true ? (
+        {loading ? (
           <Loading />
-        ) : false ? (
-          <Message variant="alert-danger">error</Message>
+        ) : error ? (
+          <Message variant="alert-danger">{error}</Message>
         ) : (
-          <div className="card">
+          <div className={order.isDisabled ? `card status-disabled` : `card`}>
             <header className="card-header p-3 Header-green">
               <div className="row align-items-center ">
                 <div className="col-lg-1 col-md-1">
@@ -28,12 +126,13 @@ const OrderDetailMain = (props) => {
                 <div className="col-lg-5 col-md-5">
                   <i class="far fa-barcode-alt"></i>
                   <b className="text-white mx-1">Mã đơn hàng:</b>
-                  <span className="text-white mx-1">order._id</span>
+                  <span className="text-white mx-1">{order._id}</span>
                   <br />
                   <span>
                     <i className="far fa-calendar-alt"></i>
-                    <b className="text-white"> Ngày đặt:</b>
+                    <b className="text-white">Ngày đặt:</b>
                     <span className="text-white mx-3 ">
+                      {moment(order.createdAt).format("LT") + " " + moment(order.createdAt).format("DD/MM/yyyy")}
                     </span>
                   </span>
                 </div>
@@ -46,12 +145,12 @@ const OrderDetailMain = (props) => {
             </header>
             <div className="card-body">
               {/* Order info */}
-              <OrderDetailInfo  />
+              <OrderDetailInfo order={order} />
 
               <div className="row">
                 <div className="col-lg-9 col-md-12">
                   <div className="table-responsive">
-                    <OrderDetailProducts />
+                    <OrderDetailProducts order={order} loading={loading} />
                   </div>
                 </div>
                 {/* Payment Info */}
@@ -63,26 +162,26 @@ const OrderDetailMain = (props) => {
                           <article className="float-end">
                             <dl className="dlist">
                               <dt className="text-start">Tổng tiền sản phẩm:</dt>{" "}
-                              <dd className="mx-0 text-end">itemsPrice</dd>
+                              <dd className="mx-0 text-end">{formatCash(order.itemsPrice)}</dd>
                             </dl>
                             <dl className="dlist">
                               <dt className="text-start">Phí vận chuyển: </dt>{" "}
-                              <dd className="mx-0 text-end">shippingPrice</dd>
+                              <dd className="mx-0 text-end">{formatCash(order.shippingPrice)}</dd>
                             </dl>
                             <dl className="dlist">
                               <dt className="text-start">Thuế VAT(5%):</dt>{" "}
-                              <dd className="mx-0 text-end">taxPrice</dd>
+                              <dd className="mx-0 text-end">{formatCash(order.taxPrice)}</dd>
                             </dl>
                             <dl className="dlist">
                               <dt className="text-start">Tổng cộng:</dt>
                               <dd className="mx-0 text-end">
-                                <b>totalPrice</b>
+                                <b>{formatCash(order.totalPrice)}</b>
                               </dd>
                             </dl>
                             <dl className="dlist">
                               <dt className="text-start fw-bold">Trạng thái thanh toán:</dt>
                               <dd className="mx-0 text-end">
-                                {true ? (
+                                {order.isPaid ? (
                                   <span className="badge3 rounded-pill alert alert-success text-success fw-bold">
                                     Thanh toán thành công
                                   </span>
@@ -98,24 +197,24 @@ const OrderDetailMain = (props) => {
                       </tr>
                     </table>
                   </div>
-                  <div className=" box shadow-sm bg-light">
-                    {!true.cancelled ? (
+                  <div className="box shadow-sm bg-light">
+                    {!order.cancelled ? (
                       <div>
-                        {true?.delivered ? (
+                        {order?.delivered ? (
                           <button className="btn btn-success col-12">
                             <p>Giao hàng thành công&nbsp;</p>
                             <p>
-                              {/* ({moment(order.deliveredAt).format("LT")}&nbsp;
-                              {moment(order.deliveredAt).format("DD/MM/yyyy")}) */}
+                              ({moment(order.deliveredAt).format("LT")}&nbsp;
+                              {moment(order.deliveredAt).format("DD/MM/yyyy")})
                             </p>
                           </button>
-                        ) : !true?.confirmed ? (
+                        ) : !order?.confirmed ? (
                           <>
-                            {true && <Loading />}
+                            {loadingConfirm && <Loading />}
                             <button
                               data-toggle="modal"
                               data-target="#exampleModalCenter"
-                              onClick={() => "confirm"}
+                              onClick={() => typeModal("confirm")}
                               className="btn btn-primary col-12 btn-size"
                             >
                               Xác nhận đơn hàng
@@ -123,11 +222,11 @@ const OrderDetailMain = (props) => {
                           </>
                         ) : (
                           <>
-                            {true && <Loading />}
+                            {loadingDelivered && <Loading />}
                             <button
                               data-toggle="modal"
                               data-target="#exampleModalCenter"
-                              onClick={() => "deliver"}
+                              onClick={() => typeModal("deliver")}
                               className="btn btn-primary col-12 btn-size"
                             >
                               Xác nhận đã giao hàng
@@ -138,22 +237,22 @@ const OrderDetailMain = (props) => {
                     ) : (
                       <></>
                     )}
-                    {"delivered" ? (
+                    {order.confirmed && order?.delivered ? (
                       <div>
-                        {"isPaid" ? (
+                        {order.isPaid ? (
                           <button className="btn btn-success col-12 mt-2">
                             <p>Đã thanh toán</p>
                             <p>
-                              {/* ({moment(order.paidAt).format("LT") + " " + moment(order.paidAt).format("DD/MM/yyyy")}) */}
+                              ({moment(order.paidAt).format("LT") + " " + moment(order.paidAt).format("DD/MM/yyyy")})
                             </p>
                           </button>
                         ) : (
                           <>
-                            {"loadingIsPaid" && <Loading />}
+                            {loadingIsPaid && <Loading />}
                             <button
                               data-toggle="modal"
                               data-target="#exampleModalCenter"
-                              onClick={() => "paid"}
+                              onClick={() => typeModal("paid")}
                               className="btn btn-warning col-12 btn-size mt-2"
                             >
                               Xác nhận đã thanh toán
@@ -164,15 +263,15 @@ const OrderDetailMain = (props) => {
                     ) : (
                       <></>
                     )}
-                    {!true?.delivered ? (
+                    {!order?.delivered ? (
                       <>
-                        {!true.cancelled ? (
+                        {!order.cancelled ? (
                           <>
-                            {true && <Loading />}
+                            {loadingCancel && <Loading />}
                             <button
                               data-toggle="modal"
                               data-target="#exampleModalCenter"
-                              onClick={() => "cancel"}
+                              onClick={() => typeModal("cancel")}
                               className="btn btn-danger col-12 btn-size mt-2"
                             >
                               Hủy đơn hàng

@@ -19,13 +19,13 @@ const CategoryList = () => {
 
   return (
     <div className="col-md-1 icon__menu-product ">
-      <img className="icon__image" src="https://cdn-icons-png.flaticon.com/128/2948/2948037.png" />
+      <img className="icon__image" src="https://cdn0.fahasa.com/skin/frontend/ma_vanese/fahasa/images/ico_menu.svg" />
       <div className="list-category-header">
         <div className="row py-2">
           <h3 className="mx-4 py-2">DANH MỤC SẢN PHẨM</h3>
           {categoryParent.map((categoryParent) => (
             <>
-              <div className="col-lg-3 col-md-6 py-1 list-category-header-item">
+              <div className="col-lg-3 col-md-6 c-6 py-1 list-category-header-item">
                 <span className="list-category-header-item__title">{categoryParent}</span>
                 {category?.map((category) =>
                   category.parent_category === categoryParent ? (

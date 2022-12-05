@@ -6,11 +6,11 @@ import { logout } from "../Redux/Actions/userActions";
 import { listBanner } from "../Redux/Actions/bannerActions";
 import CategoryList from "./homeComponents/CategoryList";
 
-const Header = () => {
-  const [keyword, setKeyword] = useState("");
+const Header = (props) => {
   const dispatch = useDispatch();
   let history = useHistory();
-
+  const { categorySlug = "" } = props;
+  const [keyword, setKeyword] = useState("");
   const cart = useSelector((state) => {
     return state.cartListItem.cartUser ?? state.cartListItem;
   });
@@ -23,7 +23,9 @@ const Header = () => {
   const { banners } = bannerList;
 
   useEffect(() => {
-    dispatch(getCartListItem());
+    if (userLogin) {
+      dispatch(getCartListItem());
+    }
     dispatch(listBanner());
   }, [dispatch]);
 
@@ -35,7 +37,11 @@ const Header = () => {
   const submitHandler = (e) => {
     e.preventDefault();
     if (keyword.trim()) {
-      history.push(`/search?q=${keyword}`);
+      if (categorySlug) {
+        history.push(`/search/category/${categorySlug}?q=${keyword}`);
+      } else {
+        history.push(`/search?q=${keyword}`);
+      }
     } else {
       history.push("/");
     }
@@ -100,15 +106,6 @@ const Header = () => {
                     </div>
                   ) : (
                     <div className="btn-group">
-                      {/* <button
-                        type="button"
-                        className="name-button dropdown-toggle"
-                        data-toggle="dropdown"
-                        aria-haspopup="true"
-                        aria-expanded="false"
-                      >
-                        <i className="fas fa-user"></i>
-                      </button> */}
                       <div className="d-flex">
                         <Link className="px-2" to="/login">
                           Đăng nhập
@@ -122,13 +119,13 @@ const Header = () => {
                   )}
 
                   <Link to="/cart" className="cart-mobile-icon">
-                    <i className="fas fa-shopping-bag"></i>
+                    <i class="fas fa-shopping-cart" style={{ color: "#4AC4FA", fontSize: "16px" }}></i>
                     <span className="badge">{cartItems?.length}</span>
                   </Link>
                 </div>
                 <div className="col-12 d-flex align-items-center">
                   <form onSubmit={submitHandler} className="input-group">
-                    {userInfo ? <CategoryList /> : <></>}
+                    <CategoryList />
                     <input
                       type="search"
                       className="form-control rounded search"
@@ -155,7 +152,7 @@ const Header = () => {
               </div>
 
               <div className="col-md-6 col-4 d-flex align-items-center">
-                {userInfo ? <CategoryList /> : <></>}
+                <CategoryList />
 
                 <form onSubmit={submitHandler} className="input-group">
                   <input
@@ -187,7 +184,7 @@ const Header = () => {
                       aria-haspopup="true"
                       aria-expanded="false"
                     >
-                      {`${userInfo?.name.length} >= 15` ? `  ${userInfo?.name.slice(0, 15)}` : `  ${userInfo?.name}`}
+                      {userInfo?.name?.length >= 15 ? `${userInfo?.name?.slice(0, 15)}` : `${userInfo?.name}`}
                     </button>
                     <div className="dropdown-menu">
                       <Link className="dropdown-item" to="/profile">
@@ -216,7 +213,7 @@ const Header = () => {
                 )}
 
                 <Link to="/cart">
-                  <i className="fas fa-shopping-bag"></i>
+                  <i class="fas fa-shopping-cart" style={{ color: "#4AC4FA", fontSize: "20px" }}></i>
                   <span className="badge">{cartItems?.length}</span>
                 </Link>
               </div>

@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/alt-text */
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Toast from "./../base/LoadingError/Toast";
@@ -248,7 +249,6 @@ const ProfileTabs = () => {
               className="input__birthday"
               type="date"
               name="birthday"
-              max="2022-11-12"
               value={birthday}
               onChange={(e) => setBirthday(e.target.value)}
             ></input>

@@ -10,7 +10,7 @@ const Orders = (props) => {
 
   return (
     <div className="profile__order d-flex justify-content-center align-items-center  flex-column">
-      <p className="d-flex flex-end fw-bold border-bottom border-secondary rounded">Tổng đơn hàng: {orders?.length}</p>
+      <p className="title__top-order">Tổng đơn hàng: {orders?.length}</p>
       {loading ? (
         <Loading />
       ) : error ? (
@@ -18,7 +18,7 @@ const Orders = (props) => {
       ) : (
         <>
           {orders?.length === 0 ? (
-            <div className="col-12 alert alert-info text-center mt-3">
+            <div className="col-12 alert alert-info text-center">
               Bạn chưa có đơn hàng nào
               <Link
                 className="btn btn-bg-main mx-2 px-3 py-2"
@@ -37,8 +37,15 @@ const Orders = (props) => {
                   <Link to={`/order/${order._id}`}>
                     <div className="profile__order-product-title row">
                       <p className="profile__order-product-id col-lg-12">
-                        <span className="fw-bold">Mã đơn hàng:</span>&nbsp;
-                        {order._id}
+                        <span className="d-flex fw-bold">
+                          Mã đơn hàng:&nbsp; <p style={{ fontWeight: "400" }}>{order._id}</p>
+                        </span>
+                        <span className="d-flex fw-bold">
+                          Ngày đặt:&nbsp;
+                          <p style={{ fontWeight: "400" }}>
+                            {moment(order.createdAt).format("LT") + " " + moment(order.createdAt).format("DD/MM/YYYY")}
+                          </p>
+                        </span>
                       </p>
                     </div>
 

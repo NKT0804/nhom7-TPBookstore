@@ -23,7 +23,7 @@ import {
   PRODUCT_UPDATE_COMMENT_RESET,
   PRODUCT_UPDATE_COMMENT_SUCCESS
 } from "../Redux/Constants/productConstants";
-import { addToCartItems } from "../Redux/Actions/cartActions";
+import { addToCartItems, getCartListItem } from "../Redux/Actions/cartActions";
 import { ADD_TO_CART_FAIL, ADD_TO_CART_RESET } from "../Redux/Constants/cartConstants";
 import ProductComment from "../components/product/ProductComment";
 import { toast } from "react-toastify";
@@ -37,6 +37,7 @@ const ToastObjects = {
   autoClose: 2000
 };
 const SingleProduct = ({ history, match }) => {
+  window.scrollTo(0, 0);
   const [qty, setQty] = useState(1);
   const [rating, setRating] = useState(5);
   const [reviewContent, setReviewContent] = useState("");
@@ -70,7 +71,7 @@ const SingleProduct = ({ history, match }) => {
   const notifiUpdateProductComment = useSelector((state) => state.productUpdateComment);
   const { success: successUpdateComment, error: errorUpdateComment } = notifiUpdateProductComment;
   const addToCart = useSelector((state) => state.addToCart);
-  const { success: successAddToCart, error: errorAddToCart } = addToCart;
+  const { success: successAddToCart, error: errorAddToCart, loading: loadingAddToCart } = addToCart;
   const loadListCommentProduct = useCallback(() => {
     if (product) {
       dispatch(listCommentProduct(product._id));
@@ -131,12 +132,13 @@ const SingleProduct = ({ history, match }) => {
 
   useEffect(() => {
     if (errorAddToCart) {
-      toast.error(errorAddToCart, ToastObjects);
       dispatch({ type: ADD_TO_CART_RESET });
+      toast.error(errorAddToCart, ToastObjects);
     }
     if (successAddToCart) {
-      toast.success("Thêm sản phẩm vào giỏ hàng thành công!", ToastObjects);
+      dispatch(getCartListItem());
       dispatch({ type: ADD_TO_CART_RESET });
+      toast.success("Thêm sản phẩm vào giỏ hàng thành công!", ToastObjects);
     }
   }, [dispatch, successAddToCart, errorAddToCart]);
   const handleAddToCart = (e) => {
@@ -144,7 +146,6 @@ const SingleProduct = ({ history, match }) => {
     if (userInfo) {
       if (qty > 0) {
         dispatch(addToCartItems(product._id, qty));
-        // history.push(`/cart/${product._id}?qty=${qty}`);
       } else {
         dispatch({ type: ADD_TO_CART_FAIL });
       }
@@ -157,6 +158,7 @@ const SingleProduct = ({ history, match }) => {
     if (userInfo) {
       if (qty > 0) {
         dispatch(addToCartItems(product._id, qty));
+        dispatch({ type: ADD_TO_CART_RESET });
         history.push(`/cart/${product._id}?qty=${qty}`);
       } else {
         dispatch({ type: ADD_TO_CART_FAIL });
@@ -248,7 +250,8 @@ const SingleProduct = ({ history, match }) => {
                         <label>Nhà cung cấp:&nbsp;</label> <b>{product.supplier}</b>
                       </span>
                       <span>
-                        <label>Tác giả:&nbsp;</label> <b>{product.author}</b>
+                        <label>Tác giả:&nbsp;</label>
+                        <b>{product.author?.length > 22 ? `${product.author.slice(0, 22)}...` : `${product.author}`}</b>
                       </span>
                     </div>
                     <div className="product-manuafactures__item">
@@ -287,17 +290,19 @@ const SingleProduct = ({ history, match }) => {
                     </div>
                     <div className="flex-box d-flex justify-content-between align-items-center">
                       <h6>Đánh giá</h6>
-                      <Rating
-                        value={product.rating}
-                        numRating={product.rating}
-                        text={`  ${product.numReviews} Đánh giá`}
-                      />
+                      <a href="#review">
+                        <Rating
+                          value={product.rating}
+                          numRating={product.rating}
+                          text={`  ${product.numReviews} Đánh giá`}
+                        />
+                      </a>
                     </div>
                     <div className="flex-box d-flex justify-content-between align-items-center">
                       <h6>Số lượng</h6>
                       <select
                         value={qty}
-                        disabled={!product.countInStock || !product.countInStock > 0}
+                        disabled={!product.countInStock || !product.countInStock > 0 || product.isDisabled}
                         onChange={(e) => setQty(e.target.value)}
                       >
                         {[...Array(product.countInStock).keys()].map((x) => (
@@ -307,22 +312,29 @@ const SingleProduct = ({ history, match }) => {
                         ))}
                       </select>
                     </div>
-                    <div className="d-flex">
-                      <button
-                        onClick={handleAddToCart}
-                        disabled={!product.countInStock || !product.countInStock > 0}
-                        className="btn__add-product round-black-btn"
-                      >
-                        <i class="fas fa-cart-plus mx-1" style={{ fontSize: "18px" }}></i>
-                        Thêm vào giỏ hàng
-                      </button>
-                      <button
-                        onClick={handleBuyNow}
-                        disabled={!product.countInStock || !product.countInStock > 0}
-                        className="round-black-btn"
-                      >
-                        Mua ngay
-                      </button>
+                    <div className="d-flex justify-content-center">
+                      {!product.isDisabled ? (
+                        <>
+                          <button
+                            onClick={handleAddToCart}
+                            disabled={!product.countInStock || !product.countInStock > 0 || product.isDisabled}
+                            className="btn__add-product round-black-btn"
+                          >
+                            {loadingAddToCart && <Loading />}
+                            <i class="fas fa-cart-plus mx-1" style={{ fontSize: "18px" }}></i>
+                            Thêm vào giỏ hàng
+                          </button>
+                          <button
+                            onClick={handleBuyNow}
+                            disabled={!product.countInStock || !product.countInStock > 0 || product.isDisabled}
+                            className="round-black-btn"
+                          >
+                            Mua ngay
+                          </button>
+                        </>
+                      ) : (
+                        <div className="cart-item-qty-alert py-2 text-danger fw-bold">Sản phẩm đã ngừng bán</div>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -387,7 +399,7 @@ const SingleProduct = ({ history, match }) => {
             </div>
 
             {/* RATING */}
-            <div className="row my-5 bg-w pd-y">
+            <div className="row my-5 bg-w pd-y" id="review">
               <div className="col-md-6">
                 <span className="d-flex align-items-center">
                   <h6 className="mx-1">ĐÁNH GIÁ</h6>
@@ -409,7 +421,7 @@ const SingleProduct = ({ history, match }) => {
                       {review.reviewContent && (
                         <div className="review-content alert alert-info mt-3">
                           {review.reviewContent}
-                          <i class="delete__review text-danger fas fa-trash-alt"></i>
+                          {/* <i class="delete__review text-danger fas fa-trash-alt"></i> */}
                         </div>
                       )}
                     </div>
@@ -439,9 +451,8 @@ const SingleProduct = ({ history, match }) => {
                       </select>
                     </div>
                     <div className="my-4">
-                      <strong>Đánh giá chi tiết</strong>
                       <textarea
-                        row="3"
+                        row="5"
                         value={reviewContent}
                         onChange={(e) => setReviewContent(e.target.value)}
                         className="col-12 bg-light p-3 mt-2 border-1 rounded"
@@ -471,7 +482,7 @@ const SingleProduct = ({ history, match }) => {
             </div>
             {/* Related products */}
             <div className="ralated-product-list pd-y">
-              {relatedProducts?.length > 0 && <h3 className="mb-3 px-3">Danh mục sản phẩm liên quan</h3>}
+              {relatedProducts?.length > 0 && <h3 className="mb-3 px-3">Sản phẩm tương tự</h3>}
               <div className="col-8 row related-product-container">
                 {loading ? (
                   <div className="mb-5 mt-5">

@@ -27,13 +27,13 @@ const Modal = (props) => {
                 aria-label="Close"
                 style={{ color: "gray", border: "none", backgroundColor: "white" }}
               >
-                <span aria-hidden="true" style={{ fontSize: "30px" }}>
+                <span aria-hidden="true" style={{ fontSize: "32px", color: "#333" }}>
                   &times;
                 </span>
               </button>
             </div>
             <div class="modal-body">{modalBody}</div>
-            <div class="modal-footer">
+            <div class="modal-footer" style={{ display: "flex", justifyContent: "space-between" }}>
               <button type="button" class="btn btn-secondary px-4" data-dismiss="modal">
                 Đóng
               </button>

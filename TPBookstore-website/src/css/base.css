@@ -83,6 +83,10 @@ html {
   opacity: 0.7;
 }
 
+.status-disabled {
+  opacity: 0.5;
+}
+
 .main-effect {
   position: relative;
 }
